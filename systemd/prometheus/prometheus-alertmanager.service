@@ -1,0 +1,27 @@
+[Unit]
+Description=Prometheus Alertmanager
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+
+PIDFile=/run/prometheus-alertmanager.pid
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/opt/prometheus/alertmanager \
+    --config.file=/etc/prometheus/alertmanager.yml \
+    --log.format=json \
+    --log.level=error \
+    --storage.path=/var/lib/prometheus/alertmanager/data \
+    --web.listen-address=0.0.0.0:9093 \
+    --web.timeout=20s
+
+Restart=on-failure
+SyslogIdentifier=prometheus-alertmanager
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

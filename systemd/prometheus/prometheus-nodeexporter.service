@@ -1,0 +1,29 @@
+[Unit]
+Description=Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+
+PIDFile=/run/prometheus-nodeexporter.pid
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/opt/prometheus/node_exporter \
+    --collector.ethtool \
+    --collector.ntp \
+    --collector.systemd \
+    --log.format=json \
+    --log.level=error \
+    --web.listen-address=0.0.0.0:9100 \
+    --web.max-requests=40 \
+    --web.telemetry-path=/metrics
+
+Restart=on-failure
+SyslogIdentifier=prometheus-nodeexporter
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

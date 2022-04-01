@@ -1,0 +1,32 @@
+[Unit]
+Description=Prometheus MongoDB Exporter - MongoDB metrics exporter for Prometheus.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Environment="MONGODB_URI=mongodb://mongodb_exporter:password@127.0.0.1:27017/admin?AuthSource=admin&authMechanism=SCRAM-SHA-256"
+
+Type=simple
+User=prometheus
+Group=prometheus
+
+PIDFile=/run/prometheus/mongodb_exporter.pid
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/opt/prometheus/mongodb_exporter \
+    --collector.collstats-limit=0 \
+    --collector.dbstats \
+    --collector.topmetrics \
+    --discovering-mode \
+    --log.level=error \
+    --mongodb.direct-connect \
+    --mongodb.global-conn-pool \
+    --web.listen-address=0.0.0.0:9216 \
+    --web.telemetry-path=/metrics
+
+Restart=on-failure
+SyslogIdentifier=prometheus-mongodbexporter
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
