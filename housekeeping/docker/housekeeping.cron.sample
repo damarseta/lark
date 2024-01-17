@@ -1,0 +1,13 @@
+SHELL=/bin/bash
+
+
+### remove docker dangling image
+5 1 * * *       root    bash /opt/housekeeping/bin/delete-dangling-image.sh >> /var/log/housekeeping/delete-dangling-image.log 2>&1
+15 1 * * *      root    bash /opt/housekeeping/bin/delete-local-image.sh  >> /var/log/housekeeping/delete-local-image.log 2>&1
+25 1 * * *      root    bash /opt/housekeeping/bin/prune-image.sh >> /var/log/housekeeping/prune-image.log 2>&1
+
+30 1 * * 0      root    docker builder prune -f -a  >> /var/log/housekeeping/docker-builder-prune.log 2>&1
+40 1 * * 0      root    docker system prune -a -f >> /var/log/housekeeping/docker-system-prune.log 2>&1
+50 1 * * *      root    docker container prune -f >>   /var/log/housekeeping/docker-container-prune.log 2>&1
+
+
