@@ -1,0 +1,1626 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE",
+      "label": "cloudquery - cloudsql-infra-shared-instance",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-postgresql-datasource",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.3.1"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-postgresql-datasource",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "This  dashboard provides a high level view of all your Google Cloud Platform resources across all accounts accounts and regions",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 16452,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 17,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 7,
+            "x": 0,
+            "y": 1
+          },
+          "id": 2,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select count(*) from gcp_resources where project_id in (${project_ids}) and _cq_table in (${cq_tables})",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "data_transfer_progress_current_rate_in_mega_bytes_per_second"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "aws_redshift_clusters",
+              "timeColumn": "cluster_create_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "Total Resources",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": [],
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 7,
+            "x": 7,
+            "y": 1
+          },
+          "id": 4,
+          "options": {
+            "displayLabels": [
+              "value"
+            ],
+            "legend": {
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "values": [
+                "value"
+              ]
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "limit": 50,
+              "values": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select project_id, count(*) from gcp_resources where _cq_table in ($cq_tables) and project_id in ($project_ids) group by project_id order by count desc",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "data_transfer_progress_current_rate_in_mega_bytes_per_second"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "aws_redshift_clusters",
+              "timeColumn": "cluster_create_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "Total Resource by Account",
+          "transformations": [],
+          "type": "piechart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 9,
+            "x": 14,
+            "y": 1
+          },
+          "id": 8,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "count"
+              }
+            ]
+          },
+          "pluginVersion": "10.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select _cq_table, count(*) from gcp_resources where project_id in ($project_ids) and _cq_table in ($cq_tables) and _cq_table not in ('gcp_compute_machine_types', 'gcp_compute_disk_types', 'gcp_compute_zones')  group by _cq_table order by count desc",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "data_transfer_progress_current_rate_in_mega_bytes_per_second"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "aws_redshift_clusters",
+              "timeColumn": "cluster_create_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "Resource Type",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 23,
+            "x": 0,
+            "y": 12
+          },
+          "id": 6,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "10.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select \n*\nfrom gcp_resources \nwhere project_id in ($project_ids) and _cq_table in ($cq_tables)\norder by project_id asc, name asc;",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "data_transfer_progress_current_rate_in_mega_bytes_per_second"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "aws_redshift_clusters",
+              "timeColumn": "cluster_create_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "All Resources",
+          "type": "table"
+        }
+      ],
+      "title": "General",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 19,
+      "panels": [],
+      "title": "Networks",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "project_id"
+          }
+        ]
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "format": "table",
+          "group": [],
+          "key": "Q-e689a5e0-eb76-436f-8040-9e31b898be4f-0",
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nproject_id, name, ipv4_range, description\nFROM gcp_compute_networks\nWHERE\n  project_id IN ($project_ids)\nORDER BY project_id asc",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gcp_compute_subnetworks",
+          "timeColumn": "_cq_sync_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "project_id",
+                "IN",
+                "$project_ids"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Network (VPC) List ",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "private_ip_google_access"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 196
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "network"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 736
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "self_link_with_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 714
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "self_link"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 780
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 211
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "subnet_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 204
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vpc_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 209
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 262
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 23,
+        "x": 0,
+        "y": 11
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "ip_cidr_range"
+          }
+        ]
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "format": "table",
+          "group": [],
+          "key": "Q-e689a5e0-eb76-436f-8040-9e31b898be4f-0",
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nsn.project_id,n.name as vpc_name,sn.name subnet_name,sn.gateway_address,sn.ip_cidr_range,sn.description,sn.enable_flow_logs,sn.private_ip_google_access,sn.creation_timestamp,sn.purpose\nFROM gcp_compute_subnetworks sn\nLEFT OUTER JOIN gcp_compute_networks n\nON sn.network = n.self_link \nWHERE\n  sn.project_id IN ($project_ids)\nORDER BY sn.project_id asc, sn.ip_cidr_range asc, sn.name asc",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gcp_compute_subnetworks",
+          "timeColumn": "_cq_sync_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "project_id",
+                "IN",
+                "$project_ids"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Subnet List",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vpc_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 189
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "peering_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 380
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 23,
+        "x": 0,
+        "y": 19
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "project_id"
+          }
+        ]
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "format": "table",
+          "group": [],
+          "key": "Q-e689a5e0-eb76-436f-8040-9e31b898be4f-0",
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT \n\tproject_id, \n\tname as vpc_name,\n\tjsonb_array_elements(peerings) -> 'name' as peering_name,\n\tjsonb_array_elements(peerings) -> 'network' as network,\t\n\tjsonb_array_elements(peerings) -> 'auto_create_routes' as auto_create_routes,\n\tjsonb_array_elements(peerings) -> 'exchange_subnet_routes' as exchange_subnet_routes,\n\tjsonb_array_elements(peerings) -> 'export_custom_routes' as export_custom_routes,\n\tjsonb_array_elements(peerings) -> 'export_subnet_routes_with_public_ip' as export_subnet_routes_with_public_ip,\n\tjsonb_array_elements(peerings) -> 'import_custom_routes' as import_custom_routes,\n\tjsonb_array_elements(peerings) -> 'import_subnet_routes_with_public_ip' as import_subnet_routes_with_public_ip,\n\tjsonb_array_elements(peerings) -> 'peer_mtu' as peer_mtu,\n\tjsonb_array_elements(peerings) -> 'stack_type' as stack_type,\n\tjsonb_array_elements(peerings) -> 'state' as state,\n\tjsonb_array_elements(peerings) -> 'state_details' as state_details\nFROM gcp_compute_networks\nWHERE project_id IN ($project_ids)\nORDER BY project_id ASC, vpc_name ASC, peering_name ASC;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gcp_compute_subnetworks",
+          "timeColumn": "_cq_sync_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "project_id",
+                "IN",
+                "$project_ids"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "VPC Peering List",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 23,
+        "x": 0,
+        "y": 28
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "format": "table",
+          "group": [],
+          "key": "Q-e689a5e0-eb76-436f-8040-9e31b898be4f-0",
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT project_id, name, address, network_tier, address_type, purpose, status\nFROM gcp_compute_addresses\nWHERE address_type='EXTERNAL' AND project_id IN ($project_ids)\nORDER BY project_id ASC, address ASC, status DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gcp_compute_subnetworks",
+          "timeColumn": "_cq_sync_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "project_id",
+                "IN",
+                "$project_ids"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Compute Instance - Public IP List",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 23,
+        "x": 0,
+        "y": 37
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "format": "table",
+          "group": [],
+          "key": "Q-e689a5e0-eb76-436f-8040-9e31b898be4f-0",
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT project_id, name, address, network_tier, address_type, purpose, status\nFROM gcp_compute_addresses\nWHERE address_type='INTERNAL' AND project_id IN ($project_ids)\nORDER BY project_id ASC, address ASC, status DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gcp_compute_subnetworks",
+          "timeColumn": "_cq_sync_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "project_id",
+                "IN",
+                "$project_ids"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Compute Instance - Private IP List",
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 46
+      },
+      "id": 24,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "description": "List of Compute Instances",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unitScale": true
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "preemtible"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 113
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "id": 25,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "10.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\n\ts.project_id,\n\ts.creation_timestamp as created_at,\n\ts.\"name\",\n\ts.hostname,\n\ts.description,\n\ts.status,\n\tservice_accountx::jsonb->>'email' as service_account,\n\tni::jsonb->>'network_i_p' as private_ip,\n\tjsonb_array_elements((ni::jsonb->>'access_configs')::jsonb)->>'nat_i_p' as public_ip,\n\ts.cpu_platform,\n\ts.can_ip_forward::bool,\n\ts.deletion_protection::bool,\n\t(s.scheduling->>'preemtible')::bool as preemtible,\n\t(s.advanced_machine_features::jsonb->>'threads_per_core') as threads_per_core,\n\t(s.advanced_machine_features::jsonb->>'visible_core_count') as visible_core_count,\n\ts.machine_type,\n\ts.\"zone\"\nFROM\n\tgcp_compute_instances s,\n\tjsonb_array_elements(s.service_accounts) as service_accountx,\n\tjsonb_array_elements(network_interfaces) as ni\nWHERE project_id IN ($project_ids)\nORDER BY \n\ts.project_id asc,\n\ts.\"name\" asc,\n\ts.status asc\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Instance List",
+          "type": "table"
+        }
+      ],
+      "title": "Compute Instances",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
+      "id": 21,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "#FF9830",
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "fieldMinMax": false,
+              "mappings": [],
+              "noValue": "-",
+              "unit": "percent",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 9,
+            "x": 0,
+            "y": 4
+          },
+          "id": 26,
+          "options": {
+            "displayLabels": [
+              "percent"
+            ],
+            "legend": {
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "values": [
+                "value"
+              ]
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "/^_COUNT$/",
+              "values": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  COUNT(_cq_id) AS \"_COUNT\",\n  database_installed_version\nFROM\n  gcp_sql_instances\nWHERE\n  database_version LIKE 'POSTGRES%'\n  AND \n  project_id IN ($project_ids)\nGROUP BY\n  database_installed_version\nLIMIT\n  50",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Count Postgre Database by Version",
+          "type": "piechart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 24,
+            "x": 0,
+            "y": 13
+          },
+          "id": 15,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "10.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  _cq_sync_time AS \"time\",\n  project_id,\n  gce_zone AS zone,\n  name,\n  database_version,\n  failover_replica,\n  instance_type,\n  (ip_addresses->0->>'ipAddress') AS primary_ip_address,\n  ip_addresses,\n  create_time\nFROM gcp_sql_instances\nWHERE \n  ip_addresses @> '[{\"type\": \"PRIMARY\"}]'\n  AND \n  project_id IN ($project_ids)\nORDER BY project_id ASC, name asc;",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "*"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              },
+              "table": "gcp_sql_instances",
+              "timeColumn": "_cq_sync_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "CloudSQL Instances",
+          "transformations": [],
+          "transparent": true,
+          "type": "table"
+        }
+      ],
+      "title": "CloudSQL",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 22,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 5
+          },
+          "id": 23,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "10.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\n\ts.project_id,  \n  \ts.\"name\" ,\n  \ts.storage_class,\n  \ts.\"location\",\n\t\ts.\"location_type\",\n  \t(s.bucket_policy_only::jsonb) ->> 'Enabled' as bucket_policy_only,\n  \t(s.uniform_bucket_level_access::jsonb) ->> 'Enabled' as uniform_bucket_level_access,\n  \ts.public_access_prevention,\n  \ts.default_event_based_hold,\n  \ts.versioning_enabled::bool \nFROM\n  gcp_storage_buckets as s\nWHERE project_id IN ($project_ids)\nORDER BY s.project_id ASC,  \n  \ts.\"name\" ASC",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Cloud Storage - Bucket",
+          "type": "table"
+        }
+      ],
+      "title": "Cloud Storage",
+      "type": "row"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [
+    "cloud-inventory",
+    "gcp",
+    "postgres",
+    "inventory",
+    "banshee"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+        },
+        "definition": "select distinct(project_id) from gcp_resources",
+        "description": "Google Project ID to filter by",
+        "hide": 0,
+        "includeAll": true,
+        "label": "project_ids",
+        "multi": true,
+        "name": "project_ids",
+        "options": [],
+        "query": "select distinct(project_id) from gcp_resources",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${DS_CLOUDQUERY_- CLOUDSQL-INFRA-SHARED-INSTANCE}"
+        },
+        "definition": "select distinct(_cq_table)  as _cq_table from gcp_resources where _cq_table not in ('gcp_machine_types', 'gcp_compute_machine_types', 'gcp_compute_disk_types', 'gcp_compute_zones') order by _cq_table asc;",
+        "description": "CQ Tables to filter by",
+        "hide": 0,
+        "includeAll": true,
+        "label": "cq_tables",
+        "multi": true,
+        "name": "cq_tables",
+        "options": [],
+        "query": "select distinct(_cq_table)  as _cq_table from gcp_resources where _cq_table not in ('gcp_machine_types', 'gcp_compute_machine_types', 'gcp_compute_disk_types', 'gcp_compute_zones') order by _cq_table asc;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "GCP Asset Inventory",
+  "uid": "cCpTRPC7z",
+  "version": 17,
+  "weekStart": ""
+}
