@@ -1,0 +1,18 @@
+spot_vms:
+- project_id: scared-of-commitments-445566
+  zones:
+  - zone: asia-southeast2-c
+    names:
+    - random-vm-name
+    - random-vm-name-2
+- project_id: incompetent-bastard-112233
+  zones:
+  - zone: asia-southeast2-c
+    names:
+    - random-vm-name
+  - zone: asia-southeast2-a
+    names:
+    - random-vm-name
+  - zone: asia-southeast2-b
+    names:
+    - random-vm-name
