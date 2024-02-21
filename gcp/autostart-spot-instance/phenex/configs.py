@@ -18,15 +18,17 @@ CONFIG_NAME = "phenex.autostart-spot-vm.yaml"
 WORKING_DIR = os.getcwd()
 
 
-def load_config(config_file: Optional[str] = None) -> Union[SpotVMGuard, bool]:
-    if not config_file:
-        config_file = PurePath(WORKING_DIR).joinpath(CONFIG_NAME)
+def load_config(cfg_file: Optional[str] = None) -> Optional[SpotVMGuard]:
+    if not cfg_file:
+        config_file = PurePath(WORKING_DIR).joinpath(CONFIG_NAME).__str__()
+    else:
+        config_file = cfg_file
 
     logger.info(f"trying to load config from {config_file}")
     if not pathlib.Path(config_file).is_file():
         logger.info("config file does not exist. creating sample config file")
         create_config(config_file)
-        return False
+        return None
 
     with open(config_file, 'r') as f:
         data = f.read()
@@ -57,4 +59,4 @@ def create_config(destination: str):
 
     y = YAML()
     with open(destination, 'w') as f:
-        y.dump(configs.dict(), f)
+        y.dump(configs.model_dump(), f)
