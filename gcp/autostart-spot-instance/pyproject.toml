@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "autostart-spot-instance"
+version = "0.1.0"
+description = "Autostart stopped SPOT VM instance"
+authors = ["widnyana <widnyana@koinworks.com>"]
+license = "WTFPL"
+readme = "README.md"
+packages = [{include = "autostart_spot_instance"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+google-cloud-compute = "^1.16.1"
+pydantic = "^2.6.1"
+ruamel-yaml = "^0.18.6"
+pydantic-yaml = "^1.2.1"
+loguru = "^0.7.2"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.2.2"
+pre-commit = "^3.6.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
