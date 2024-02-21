@@ -8,11 +8,11 @@ import pathlib
 from pathlib import PurePath
 from typing import Optional, Union
 
+from loguru import logger
 from pydantic_yaml import parse_yaml_raw_as
 from ruamel.yaml import YAML
 
-from schema import SpotVMGuard, ProjectVM, InstanceByZone
-from loguru import logger
+from .schema import SpotVMGuard, ProjectVM, InstanceByZone
 
 CONFIG_NAME = "phenex.autostart-spot-vm.yaml"
 WORKING_DIR = os.getcwd()
@@ -42,39 +42,18 @@ def create_config(destination: str):
         spot_vms=[
             ProjectVM(
                 project_id="scared-of-commitments-445566",
-                zones=[
-                    InstanceByZone(
-                        zone="asia-southeast2-c",
-                        names=[
-                            "random-vm-name",
-                            "random-vm-name-2"
-                        ])
-                ]
+                zones=[InstanceByZone(zone="asia-southeast2-c", names=["random-vm-name", "random-vm-name-2"])],
             ),
             ProjectVM(
                 project_id="incompetent-bastard-112233",
                 zones=[
-                    InstanceByZone(
-                        zone="asia-southeast2-c",
-                        names=[
-                            "random-vm-name"
-                        ]
-                    ),
-                    InstanceByZone(
-                        zone="asia-southeast2-a",
-                        names=[
-                            "random-vm-name"
-                        ]
-                    ),
-                    InstanceByZone(
-                        zone="asia-southeast2-b",
-                        names=[
-                            "random-vm-name"
-                        ]
-                    )
-                ]
-            )
-        ])
+                    InstanceByZone(zone="asia-southeast2-c", names=["random-vm-name"]),
+                    InstanceByZone(zone="asia-southeast2-a", names=["random-vm-name"]),
+                    InstanceByZone(zone="asia-southeast2-b", names=["random-vm-name"]),
+                ],
+            ),
+        ]
+    )
 
     y = YAML()
     with open(destination, 'w') as f:

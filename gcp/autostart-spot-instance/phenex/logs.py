@@ -13,7 +13,7 @@ def configure_logger():
         "handlers": [
             {"sink": sys.stdout, "format": "{time} - [{level}] - {message}"},
         ],
-        "extra": {"app": "phenex"}
+        "extra": {"app": "phenex"},
     }
 
     logger.remove()

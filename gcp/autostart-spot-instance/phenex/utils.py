@@ -11,7 +11,7 @@ from loguru import logger
 
 
 def wait_for_extended_operation(
-        operation: ExtendedOperation, verbose_name: str = "operation", timeout: int = 300
+    operation: ExtendedOperation, verbose_name: str = "operation", timeout: int = 300
 ) -> Any:
     """
     Waits for the extended (long-running) operation to complete.

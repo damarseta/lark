@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "autostart-spot-instance"
+name = "phenex"
 version = "0.1.0"
 description = "Autostart stopped SPOT VM instance"
 authors = ["widnyana <widnyana@koinworks.com>"]
 license = "WTFPL"
 readme = "README.md"
-packages = [{include = "autostart_spot_instance"}]
+packages = [{ include = "phenex" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -22,3 +22,27 @@ pre-commit = "^3.6.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+skip-string-normalization = true
+line-length = 120
+
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+ignore = [
+    "E501", # line too long, handled by black
+    "C901", # too complex
+]
+
+[tool.ruff.lint.isort]
+order-by-type = true
+relative-imports-order = "closest-to-furthest"
+extra-standard-library = ["typing"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+known-first-party = []
+
+[tool.poetry.scripts]
+phenex = "phenex.main:main"
