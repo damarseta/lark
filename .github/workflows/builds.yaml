@@ -1,0 +1,32 @@
+name: build phenex
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ./gcp/autostart-spot-instance
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Qemu
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and Push Container Image
+        uses: docker/build-push-action@v5
+        with:
+          target: runtime
+          context: ./gcp/autostart-spot-instance
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: widnyana/phenex:${{ github.sha }}
